@@ -1,0 +1,16 @@
+from output.tts import TTS
+import time
+
+def main():
+    print("Testing TTS..")
+
+    tt=TTS()
+
+    tts.speak("Hello. This is Aura testing the speech output system."
+
+    time.sleep(5)
+
+    print("TTS test completed.")
+
+if __name__=="__main__")
+    main()
