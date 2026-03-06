@@ -22,10 +22,7 @@ def main():
         energy_threshold=0.015
     )
 
-    classifier = AmbientClassifier(
-        confidence_threshold=0.4,
-        smoothing_window=2
-    )
+    classifier = AmbientClassifier()
 
     rule_engine = RuleEngine(
         cooldown_seconds=20,
@@ -33,6 +30,10 @@ def main():
     )
 
     tts = TTS(rate=165)
+
+    print("AURA is listening to the environment...", flush=True)
+
+    last_message = None
 
     try:
         for audio_frame in mic.audio_generator():
@@ -46,6 +47,9 @@ def main():
             if label is None:
                 continue
 
+            print(f"[DEBUG] label={label}, confidence={confidence:.2f}, vad={vad_active}")
+
+
             # 3️⃣ Decide whether to speak
             message = rule_engine.evaluate(
                 environment_label=label,
@@ -55,8 +59,11 @@ def main():
 
             # 4️⃣ Speak if needed
             if message:
-                print(f"AURA says: {message}")
-                tts.speak(message)
+                 if message != last_message:
+                    print(f"AURA says: {message}", flush=True)
+                    tts.speak(message)
+                    last_message = message
+               
 
     except KeyboardInterrupt:
         print("\nAURA stopped manually.")
