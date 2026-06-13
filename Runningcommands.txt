@@ -1,4 +1,95 @@
- python -m venv aura_env
- aura_env\Scripts\activate
-python -m orchestrator.aura_core
+# Requirements
+
+## Software Requirements
+
+- Python 3.10+
+- Visual Studio Code
+- Streamlit
+- Internet Connection (first-time model downloads)
+
+---
+
+## Core Libraries
+
+```bash
+pip install streamlit ultralytics transformers torch torchvision
+pip install opencv-python pandas numpy pillow
+pip install pyaudio pyttsx3 webrtcvad gtts
+```
+
+---
+
+# Environment Setup
+
+Create virtual environment:
+
+```bash
+python -m venv aura_env
+```
+
+Activate environment:
+
+### Windows
+
+```bash
+aura_env\Scripts\activate
+```
+
+### Linux/Mac
+
+```bash
+source aura_env/bin/activate
+```
+
+---
+
+# Running Commands
+
+## Run Audio Module
+
+```bash
+python orchestrator/aura_core.py
+```
+
+---
+
+## Run Vision Module
+
+```bash
+python vision_module/vision_core.py
+```
+
+---
+
+## Run Integrated Streamlit Interface
+
+```bash
 streamlit run app.py
+```
+
+---
+
+# Expected Outputs
+
+### Audio Module
+
+- Real-time environment classification
+- Voice feedback
+- Audio logs
+- Confidence analysis graphs
+
+### Vision Module
+
+- Scene interpretation
+- Object detection results
+- Speech narration
+- Context analysis
+- Visual analytics
+
+### Streamlit Interface
+
+- Audio Analysis Dashboard
+- Vision Analysis Dashboard
+- Graphical Insights
+- System Interpretation
+- Confidence Indicators
