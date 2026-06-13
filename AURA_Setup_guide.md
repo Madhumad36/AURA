@@ -1,599 +1,310 @@
+# AURA Setup Guide
 
+## Prerequisites
 
-```
-AURA_SETUP_GUIDE.md
-```
+Before running the project, ensure the following software is installed:
 
-
----
-
-# AURA – AI-Powered Social Context Awareness System
-
-### A Digital Sixth Sense for the Visually Impaired
-
----
-
-# 1. Project Overview
-
-AURA is a **real-time assistive system** designed to provide **social and environmental awareness** to visually impaired individuals.
-
-The system continuously listens to the surrounding environment using a microphone and analyzes ambient audio using machine learning models. Based on detected environmental context, AURA provides **audio feedback through text-to-speech** to inform the user about their surroundings.
-
-The system works fully in **real-time** and processes audio locally on the device.
-
-Example outputs:
-
-```
-"The environment is quiet."
-"People are having conversations nearby."
-"The environment is noisy."
-```
+- Python 3.10 or later
+- Visual Studio Code
+- Git (optional)
+- Working microphone
+- Internet connection (required for some text-to-speech operations)
 
 ---
 
-# 2. Core Idea
+# Project Structure
 
-Visually impaired individuals often struggle to understand **social context**, such as:
-
-* whether people are talking nearby
-* whether the environment is crowded
-* whether it is quiet or noisy
-
-AURA acts as a **digital sixth sense** by analyzing environmental audio and providing spoken feedback.
-
----
-
-# 3. System Architecture
-
-AURA is built using a **modular pipeline architecture**.
-
-```
-Microphone Input
-        ↓
-Audio Capture Module
-        ↓
-Voice Activity Detection (VAD)
-        ↓
-Audio Classification (YAMNet)
-        ↓
-Environment Mapping
-        ↓
-Decision Engine
-        ↓
-Text-To-Speech Output
-```
-
----
-
-# 4. Folder Structure
-
-Project directory structure:
-
-```
 AURA/
 │
 ├── audio_capture/
-│   ├── __init__.py
-│   └── mic_stream.py
-│
-├── audio_preprocessing/
-│   ├── __init__.py
-│   └── preprocess.py
-│
 ├── audio_classification/
-│   ├── __init__.py
-│   └── ambient_classifier.py
-│
-├── vad/
-│   ├── __init__.py
-│   └── vad_engine.py
-│
 ├── decision_engine/
-│   ├── __init__.py
-│   └── rule_engine.py
-│
 ├── output/
-│   ├── __init__.py
-│   └── tts.py
-│
-├── orchestrator/
-│   ├── __init__.py
-│   └── aura_core.py
-│
-├── test_vad.py
-├── test_tts.py
-├── test_rule_engine.py
-│
+├── utils/
+├── vad/
+├── vision_module/
+├── logs/
+├── app.py
+├── requirements.txt
 └── README.md
+
+---
+
+# Step 1: Create Virtual Environment
+
+Open terminal inside the project directory.
+
+```bash
+python -m venv aura_env
+```
+
+Activate environment:
+
+### Windows
+
+```bash
+aura_env\Scripts\activate
+```
+
+### Linux / Mac
+
+```bash
+source aura_env/bin/activate
 ```
 
 ---
 
-# 5. Development Environment
+# Step 2: Install Dependencies
 
-The project was developed and tested with the following environment.
+Install all required packages:
 
-### Python Version
-
-```
-Python 3.11.9
+```bash
+pip install -r requirements.txt
 ```
 
-Python 3.11 is used because some libraries (especially `webrtcvad`) are not fully compatible with Python 3.13.
+If requirements.txt is unavailable, install manually:
 
----
-
-# 6. Required Hardware
-
-Minimum requirements:
-
-* Microphone (built-in laptop microphone is sufficient)
-* Laptop / PC
-* Internet connection (first run downloads YAMNet model)
-
-Optional:
-
-* External microphone for better detection
-
----
-
-# 7. Required Python Libraries
-
-AURA depends on the following libraries:
-
-```
-tensorflow
-tensorflow-hub
-numpy
-sounddevice
-librosa
-scikit-learn
-webrtcvad
-pyttsx3
-```
-
-Additional dependencies automatically installed:
-
-```
-scipy
-numba
-joblib
-pooch
-tensorboard
+```bash
+pip install streamlit
+pip install ultralytics
+pip install transformers
+pip install torch
+pip install torchvision
+pip install opencv-python
+pip install pandas
+pip install numpy
+pip install pyaudio
+pip install pyttsx3
+pip install webrtcvad
+pip install pillow
+pip install gtts
 ```
 
 ---
 
-# 8. Installing the Project
+# Step 3: Verify Installation
 
-## Step 1 – Clone or Download the Project
+Check Python version:
 
-Example:
-
-```
-git clone <repository link>
+```bash
+python --version
 ```
 
-Or download the ZIP file and extract it.
+Verify important libraries:
 
-Navigate to project directory:
+```bash
+python -c "import cv2"
+python -c "from ultralytics import YOLO"
+python -c "from transformers import BlipProcessor"
+python -c "import streamlit"
+```
 
-```
-cd AURA
-```
+No errors indicate successful installation.
 
 ---
 
-# 9. Creating a Virtual Environment
+# Running the Audio Module
 
-Creating a virtual environment is **strongly recommended**.
+Navigate to the project root directory and execute:
 
-It prevents conflicts with other Python projects.
-
-### Create virtual environment
-
-Windows:
-
+```bash
+python orchestrator/aura_core.py
 ```
-python -m venv .venv
-```
+
+The audio module will:
+
+- Capture microphone input
+- Perform Voice Activity Detection (VAD)
+- Classify environmental sounds
+- Generate contextual interpretations
+- Produce speech feedback
+- Save logs for analysis
 
 ---
 
-### Activate virtual environment
+# Running the Vision Module
 
-Windows PowerShell:
+Execute:
 
-```
-.venv\Scripts\Activate.ps1
-```
-
-After activation you should see:
-
-```
-(.venv)
+```bash
+python vision_module/vision_core.py
 ```
 
-before the terminal prompt.
+The vision module will:
+
+- Accept video input
+- Extract frames
+- Perform YOLO object detection
+- Generate BLIP captions
+- Create scene interpretations
+- Produce analysis outputs
 
 ---
 
-# 10. Installing Dependencies
+# Running the Streamlit Interface
 
-Run the following command:
+Launch the integrated interface:
 
+```bash
+streamlit run app.py
 ```
-pip install tensorflow tensorflow-hub numpy sounddevice librosa scikit-learn webrtcvad pyttsx3
+
+After execution, Streamlit will provide a local URL similar to:
+
+```text
+http://localhost:8501
 ```
 
-This may take a few minutes because TensorFlow is large.
+Open the URL in a web browser.
 
 ---
 
-# 11. First Time Model Download
+# Using Audio Analysis
 
-When running the classifier for the first time:
-
-TensorFlow Hub automatically downloads the **YAMNet model**.
-
-```
-https://tfhub.dev/google/yamnet/1
-```
-
-The model is cached locally after the first run.
+1. Select "Audio Analysis" mode.
+2. Choose recording duration.
+3. Click "Start Analysis".
+4. Allow microphone access if prompted.
+5. Wait until processing completes.
+6. Review logs, metrics, and graphs.
 
 ---
 
-# 12. Running Individual Components
+# Using Vision Analysis
 
-Before running the full system, individual modules can be tested.
+1. Select "Vision Analysis" mode.
+2. Upload a supported video file.
+3. Click "Run Analysis".
+4. Wait for processing to finish.
+5. Review:
+   - Scene Interpretation
+   - Detection Data
+   - System Confidence
+   - Activity Analysis Graphs
+   - Speech Output
 
 ---
 
-# 12.1 Testing Microphone Stream
+# Generated Outputs
+
+## Audio Module
+
+Generated files may include:
+
+```text
+logs/
+└── aura_logs.csv
+```
+
+Outputs:
+
+- Environmental labels
+- Confidence values
+- VAD status
+- Graphical analytics
+
+---
+
+## Vision Module
+
+Generated files may include:
+
+```text
+vision_analysis.csv
+output.mp3
+```
+
+Outputs:
+
+- Object detections
+- Scene interpretations
+- Confidence indicators
+- Speech narration
+- Activity graphs
+
+---
+
+# Common Issues
+
+## Microphone Not Detected
+
+Verify:
+
+- Microphone permissions are enabled
+- Correct recording device is selected
+- Audio drivers are installed
+
+---
+
+## Streamlit Not Opening
 
 Run:
 
-```
-python -m audio_capture.mic_stream
-```
-
-Expected output:
-
-```
-Captured audio frame: (16000,)
-Captured audio frame: (16000,)
+```bash
+streamlit run app.py
 ```
 
-Each frame represents **1 second of audio at 16kHz**.
+If issue persists:
 
----
-
-# 12.2 Testing Voice Activity Detection
-
-Run:
-
-```
-python test_vad.py
-```
-
-Expected output:
-
-```
-Speech Detected: False
-Speech Detected: False
-Speech Detected: True
-Speech Detected: True
-```
-
-This detects whether human speech is present in the audio.
-
----
-
-# 12.3 Testing Text-To-Speech
-
-Run:
-
-```
-python test_tts.py
-```
-
-Expected output:
-
-The system speaks:
-
-```
-"This is AURA testing speech output."
+```bash
+pip install --upgrade streamlit
 ```
 
 ---
 
-# 12.4 Testing Rule Engine
+## YOLO Model Download Error
 
-Run:
+Ensure internet connectivity during first execution.
 
-```
-python test_rule_engine.py
-```
-
-Expected output:
-
-```
-AURA would say: The environment is quiet.
-AURA would say: People are having conversations nearby.
-```
-
-This verifies that the decision logic works correctly.
+YOLO weights are downloaded automatically on first run.
 
 ---
 
-# 12.5 Testing Ambient Environment Classifier
+## PyAudio Installation Error
 
-Run:
+For Windows:
 
-```
-python -m audio_classification.ambient_classifier
-```
-
-Expected output:
-
-```
-Detected Environment: conversational
-Confidence: 0.87
-```
-
-Possible labels:
-
-```
-quiet
-conversational
-noisy
-crowded
+```bash
+pip install pipwin
+pipwin install pyaudio
 ```
 
 ---
 
-# 13. Running the Complete AURA System
+# System Requirements
 
-To run the full system pipeline:
+Minimum:
 
-```
-python -m orchestrator.aura_core
-```
+- Intel i5 Processor
+- 8 GB RAM
+- Windows 10/11
+- Python 3.10+
 
-Example output:
+Recommended:
 
-```
-AURA – Real Time Assistive System
-
-AURA says: The environment is conversational.
-AURA says: The environment is quiet.
-```
-
-The system continuously listens to environmental audio.
+- Intel i7 Processor
+- 16 GB RAM
+- Dedicated GPU (optional)
+- SSD Storage
 
 ---
 
-# 14. How the System Works Internally
+# Successful Setup Checklist
 
-Each second the system performs the following pipeline.
+✓ Python Installed
 
-### Step 1 – Audio Capture
+✓ Virtual Environment Created
 
-```
-mic_stream.py
-```
+✓ Dependencies Installed
 
-Captures **1 second audio chunks (16000 samples)**.
+✓ Audio Module Running
 
----
+✓ Vision Module Running
 
-### Step 2 – Voice Activity Detection
+✓ Streamlit Interface Accessible
 
-```
-vad_engine.py
-```
+✓ Logs Generated Successfully
 
-Determines whether someone is speaking.
+✓ Graphs and Outputs Displayed Correctly
 
-This prevents AURA from speaking over a conversation.
-
----
-
-### Step 3 – Ambient Audio Classification
-
-```
-ambient_classifier.py
-```
-
-Uses **Google YAMNet model**.
-
-YAMNet detects **521 different audio classes**.
-
-These are mapped to simplified environments:
-
-```
-speech → conversational
-crowd/applause → crowded
-traffic/engine → noisy
-else → quiet
-```
-
----
-
-### Step 4 – Temporal Smoothing
-
-To prevent unstable predictions:
-
-```
-2 consecutive predictions required
-```
-
-before changing environment state.
-
-This improves stability.
-
----
-
-### Step 5 – Decision Engine
-
-```
-rule_engine.py
-```
-
-Controls when AURA should speak.
-
-Rules include:
-
-* minimum confidence threshold
-* cooldown between announcements
-* avoid interrupting speech
-
----
-
-### Step 6 – Text-To-Speech Output
-
-```
-tts.py
-```
-
-Converts messages into spoken audio.
-
-Example messages:
-
-```
-"The environment is quiet."
-"People are having conversations nearby."
-```
-
----
-
-# 15. Key System Parameters
-
-These can be tuned:
-
-### Classification Confidence
-
-```
-confidence_threshold = 0.4
-```
-
----
-
-### Temporal Smoothing
-
-```
-smoothing_window = 2
-```
-
----
-
-### Announcement Cooldown
-
-```
-cooldown_seconds = 20
-```
-
-Prevents repeated announcements.
-
----
-
-# 16. Example Use Case
-
-User enters a room where people are talking.
-
-Pipeline behavior:
-
-```
-audio detected
-↓
-speech detected
-↓
-environment classified as conversational
-↓
-rule engine triggers
-↓
-AURA says:
-"People are having conversations nearby."
-```
-
----
-
-# 17. Limitations
-
-Current limitations:
-
-* audio-only system
-* limited environment classes
-* occasional classification noise
-* depends on microphone quality
-
----
-
-# 18. Future Improvements
-
-Future versions may include:
-
-* camera-based social detection
-* facial expression analysis
-* direction of sound detection
-* haptic feedback
-* smartphone app deployment
-* TensorFlow Lite mobile inference
-
----
-
-# 19. Contribution
-
-If other developers want to run this project:
-
-They must:
-
-1. Install Python 3.11
-2. Create a virtual environment
-3. Install dependencies
-4. Run:
-
-```
-python -m orchestrator.aura_core
-```
-
----
-
-# 20. Project Status
-
-Current stage:
-
-```
-Phase 1 – Audio MVP Completed
-```
-
-Working components:
-
-```
-real-time audio capture
-voice detection
-environment classification
-decision logic
-speech feedback
-```
-
----
-
-Also if you have tensorflow loading problem then do this:
-SOLUTION 1:
-1. Press WIN + R
-2. Type %TEMP%
-3. delete tfModules
-   
-SOLUTION 2:
-1. Press WIN + R
-2. Type C:\Users\DELL\.keras;
-3. DELETE keras (if exists)//
-
-**EXECUTION commands including virtual environment**
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-pip install pandas matplotlib
- python -m orchestrator.aura_core
- python analysis/analyze_logs.py
+The AURA system is now ready for execution and demonstration.
