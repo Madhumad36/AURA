@@ -1,0 +1,4 @@
+ python -m venv aura_env
+ aura_env\Scripts\activate
+python -m orchestrator.aura_core
+streamlit run app.py
